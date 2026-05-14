@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": null,
+  "level": null,
+  "goals": [],
+  "started_at": null,
+  "last_active": null,
+  "_levels_allowed": [
+    "absolute_beginner",
+    "used_chat_only",
+    "tried_claude_code",
+    "regular_user",
+    "advanced"
+  ]
+}

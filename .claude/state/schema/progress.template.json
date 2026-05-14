@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "current": {
+    "track": null,
+    "module": null,
+    "next_suggested": "/start"
+  },
+  "completed": [],
+  "tracks": {
+    "foundations": {
+      "label": "Foundations Zero — from chat-only to Claude Code",
+      "lessons": [
+        "intro-claude-code",
+        "install-claude-code",
+        "first-session",
+        "init-walkthrough",
+        "claude-md-hierarchy"
+      ]
+    },
+    "core-concepts": {
+      "label": "Core Concepts — the moving parts of Claude Code",
+      "lessons": [
+        "rules-and-memory",
+        "slash-commands-intro",
+        "skills-intro",
+        "hooks-intro",
+        "permissions-intro",
+        "subagents-intro",
+        "plan-mode",
+        "context-window",
+        "mcp-intro"
+      ]
+    },
+    "workflow": {
+      "label": "Workflow — how to actually be productive",
+      "lessons": [
+        "brainstorming",
+        "spec-driven",
+        "plan-deep",
+        "iterative-refinement",
+        "tdd-with-claude"
+      ]
+    },
+    "plugins": {
+      "label": "Plugins — extending Claude Code",
+      "lessons": [
+        "plugins-intro",
+        "plugins-install",
+        "superpowers-plugin",
+        "plugins-create"
+      ]
+    },
+    "domains": {
+      "label": "Certification domains — exam-focused study",
+      "lessons": ["domain1", "domain2", "domain3", "domain4", "domain5"]
+    }
+  }
+}
