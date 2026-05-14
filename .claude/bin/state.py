@@ -138,15 +138,56 @@ def cmd_session_start(_args) -> int:
     return 0
 
 
-def cmd_show(_args) -> int:
+def _resolve_track(progress: dict, key: str) -> str | None:
+    """Accept either a track key, a short alias, or a lesson id; return the track key."""
+    if not key:
+        return None
+    tracks = progress.get("tracks", {})
+    if key in tracks:
+        return key
+    aliases = {
+        "foundations": "foundations",
+        "foundation": "foundations",
+        "zero": "foundations",
+        "core": "core-concepts",
+        "core-concepts": "core-concepts",
+        "concepts": "core-concepts",
+        "workflow": "workflow",
+        "plugins": "plugins",
+        "plugin": "plugins",
+        "domains": "domains",
+        "domain": "domains",
+        "cert": "domains",
+        "certification": "domains",
+    }
+    if key in aliases and aliases[key] in tracks:
+        return aliases[key]
+    # Maybe they passed a lesson id — find its track.
+    for tk, t in tracks.items():
+        if key in t.get("lessons", []):
+            return tk
+    return None
+
+
+def cmd_show(args) -> int:
     profile, progress = ensure_init()
     name = profile.get("name") or "(unset)"
     level = profile.get("level") or "(unset)"
     completed = _completed_ids(progress)
+    track_filter = _resolve_track(progress, getattr(args, "track", None))
+    if getattr(args, "track", None) and not track_filter:
+        valid = ", ".join(progress.get("tracks", {}).keys())
+        print(f"ERROR: unknown track '{args.track}'. Valid tracks: {valid}", file=sys.stderr)
+        return 2
     print("=" * 60)
-    print(f" Training progress for: {name}   (level: {level})")
+    title = f" Training progress for: {name}   (level: {level})"
+    if track_filter:
+        title += f"   [filter: {track_filter}]"
+    print(title)
     print("=" * 60)
     for tk, t in progress.get("tracks", {}).items():
+        if track_filter and tk != track_filter:
+            continue
         lessons = t.get("lessons", [])
         done = sum(1 for lid in lessons if lid in completed)
         print(f"\n[{tk}] {t.get('label', tk)}   {done}/{len(lessons)}")
@@ -155,20 +196,31 @@ def cmd_show(_args) -> int:
             print(f"  {mark} {lid}")
     cur = progress.get("current", {})
     print()
-    print(f"Current track : {cur.get('track')}")
-    print(f"Current module: {cur.get('module')}")
-    print(f"Next suggested: {cur.get('next_suggested')}")
-    if profile.get("goals"):
-        print(f"Goals: {', '.join(profile['goals'])}")
+    if not track_filter:
+        print(f"Current track : {cur.get('track')}")
+        print(f"Current module: {cur.get('module')}")
+        print(f"Next suggested: {cur.get('next_suggested')}")
+        if profile.get("goals"):
+            print(f"Goals: {', '.join(profile['goals'])}")
     return 0
 
 
-def cmd_syllabus(_args) -> int:
-    """Print the full curriculum as a numbered list with completion flags."""
+def cmd_syllabus(args) -> int:
+    """Print the curriculum, optionally filtered to one track."""
     _, progress = ensure_init()
     completed = _completed_ids(progress)
+    track_filter = _resolve_track(progress, getattr(args, "track", None))
+    if getattr(args, "track", None) and not track_filter:
+        valid = ", ".join(progress.get("tracks", {}).keys())
+        print(f"ERROR: unknown track '{args.track}'. Valid tracks: {valid}", file=sys.stderr)
+        return 2
     n = 0
     for tk, t in progress.get("tracks", {}).items():
+        if track_filter and tk != track_filter:
+            # Still increment the counter so numbering across the full
+            # curriculum stays stable when a filter is applied.
+            n += len(t.get("lessons", []))
+            continue
         print(f"\n## {t.get('label', tk)}")
         for lid in t.get("lessons", []):
             n += 1
@@ -293,8 +345,15 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("init").set_defaults(fn=cmd_init)
     sub.add_parser("session-start").set_defaults(fn=cmd_session_start)
-    sub.add_parser("show").set_defaults(fn=cmd_show)
-    sub.add_parser("syllabus").set_defaults(fn=cmd_syllabus)
+
+    sp = sub.add_parser("show")
+    sp.add_argument("--track", help="Limit to one track (key or alias).")
+    sp.set_defaults(fn=cmd_show)
+
+    sp = sub.add_parser("syllabus")
+    sp.add_argument("--track", help="Limit to one track (key or alias).")
+    sp.set_defaults(fn=cmd_syllabus)
+
     sub.add_parser("next").set_defaults(fn=cmd_next)
 
     sp = sub.add_parser("set-profile")

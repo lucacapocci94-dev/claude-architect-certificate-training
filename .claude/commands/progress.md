@@ -1,14 +1,25 @@
 ---
-description: "Show the student's training progress."
+description: "Show the student's training progress. Optional arg: a track (foundations|core|workflow|plugins|domains) to filter the view."
+argument-hint: "[track]"
 allowed-tools: ["Bash(python3:*)"]
 ---
 
-Run the state script and show its output verbatim:
+The optional filter is: **$ARGUMENTS**
+
+If `$ARGUMENTS` is empty, show the full progress:
 
 ```bash
 python3 .claude/bin/state.py show
 ```
 
-Then, in plain language, add a one-line summary of where they are and what `/next` will take them to. Do **not** auto-advance — just inform.
+If `$ARGUMENTS` is non-empty, treat it as a track name or alias and filter:
 
-If there are uncompleted lessons within the current track, point that out and offer to resume. If the current track is finished, offer the next track in the canonical order.
+```bash
+python3 .claude/bin/state.py show --track "$ARGUMENTS"
+```
+
+After the output, add a one-line summary of where the student is and what `/next` will take them to. Do not auto-advance — just inform.
+
+If a track filter was used and that track is finished, congratulate them and offer the next track in the canonical order (foundations → core → workflow → plugins → domains).
+
+If the script exits non-zero with "unknown track", relay the list of valid tracks back to the student.
