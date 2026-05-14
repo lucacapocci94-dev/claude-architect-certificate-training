@@ -1,1 +1,8 @@
 .DS_Store
+
+# Per-student local state (progress, profile, notes).
+# Each student has their own state — never commit it.
+.claude/state/profile.json
+.claude/state/progress.json
+.claude/state/notes.md
+.claude/state/session-*.log
