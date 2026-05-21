@@ -14,16 +14,17 @@ duration_min: 10
 
 ## 1. Choose a project (not this one)
 
-This is important: tell the student to **open a second terminal** and `cd` into one of *their* projects — preferably one with some code in it, ideally under git. Personal repos are fine, work repos are fine (subject to their security policy).
+This is important: tell the student to **open a second terminal** and `cd` into one of *their* projects — preferably an Angular app or a Node service they actually work on. Personal projects are fine, work projects are fine (subject to their security policy).
 
-If they say "I don't have a project", suggest cloning a small public one as a sandbox:
+If they say "I don't have one to hand", point them at the **sample Angular project shipped with the course**:
 
 ```bash
-git clone https://github.com/anthropics/courses ~/claude-sandbox
-cd ~/claude-sandbox
+cd extra_materials/sample-angular-project
 ```
 
-Make sure they actually have a terminal open in a real project before continuing. Wait.
+That folder contains a small but realistic Angular app + an Express backend. It's the same project all the Workflow lessons will use, so getting comfortable here pays off later.
+
+Make sure they actually have a terminal open in a real project (their own or the sample) before continuing. Wait.
 
 ## 2. Launch
 

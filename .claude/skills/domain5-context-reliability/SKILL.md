@@ -3,6 +3,8 @@ description: "Domain 5 — Context Management & Reliability (15% of exam). Cover
 command: "domain5"
 ---
 
+> **OPTIONAL — certification track only.** Not part of the canonical 1-week productivity path. Only teach when the student has finished Foundations + Core + Workflow + Plugins, or has stated the cert exam as their goal.
+
 This is Domain 5: Context Management & Reliability — worth **15%** of the exam.
 
 Although it carries the lowest weight, the ideas in this domain ripple through Domains 1, 2, and 4. Mistakes here undermine your multi-agent architectures and data extraction workflows.

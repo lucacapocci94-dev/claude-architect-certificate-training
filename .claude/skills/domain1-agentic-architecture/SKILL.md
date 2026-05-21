@@ -3,6 +3,8 @@ description: "Domain 1 — Agentic Architecture & Orchestration (27% of exam). C
 command: "domain1"
 ---
 
+> **OPTIONAL — certification track only.** This skill is NOT part of the canonical 1-week productivity path. Only teach it if the student has finished Foundations + Core + Workflow + Plugins, or has explicitly stated the certification exam as their primary goal in `/start`. If they are mid-canonical-path, push back and route them to `/next` instead.
+
 This covers Domain 1: Agentic Architecture & Orchestration, which accounts for **27%** of the exam and carries the highest weight of any domain.
 
 It features prominently across three exam scenarios: Customer Support Resolution Agent, Multi-Agent Research System, and Developer Productivity Tools.

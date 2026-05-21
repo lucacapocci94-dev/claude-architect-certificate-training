@@ -3,6 +3,8 @@ description: "Domain 2 — Tool Design & MCP Integration (18% of exam). Covers: 
 command: "domain2"
 ---
 
+> **OPTIONAL — certification track only.** Not part of the canonical 1-week productivity path. Only teach when the student has finished Foundations + Core + Workflow + Plugins, or has stated the cert exam as their goal.
+
 This is Domain 2: Tool Design & MCP Integration — worth **18%** of the exam.
 
 It shows up mainly in: Customer Support Resolution Agent, Multi-Agent Research System, and Developer Productivity Tools scenarios.

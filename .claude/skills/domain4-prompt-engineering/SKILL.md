@@ -3,6 +3,8 @@ description: "Domain 4 — Prompt Engineering & Structured Output (20% of exam).
 command: "domain4"
 ---
 
+> **OPTIONAL — certification track only.** Not part of the canonical 1-week productivity path. Only teach when the student has finished Foundations + Core + Workflow + Plugins, or has stated the cert exam as their goal.
+
 This is Domain 4: Prompt Engineering & Structured Output — worth **20%** of the exam.
 
 It shows up mainly in: Claude Code for CI/CD and Structured Data Extraction scenarios.

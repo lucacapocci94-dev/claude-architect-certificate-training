@@ -190,7 +190,8 @@ def cmd_show(args) -> int:
             continue
         lessons = t.get("lessons", [])
         done = sum(1 for lid in lessons if lid in completed)
-        print(f"\n[{tk}] {t.get('label', tk)}   {done}/{len(lessons)}")
+        optional_tag = "  (OPTIONAL — certification track)" if t.get("optional") else ""
+        print(f"\n[{tk}] {t.get('label', tk)}{optional_tag}   {done}/{len(lessons)}")
         for lid in lessons:
             mark = "[x]" if lid in completed else "[ ]"
             print(f"  {mark} {lid}")
@@ -217,11 +218,10 @@ def cmd_syllabus(args) -> int:
     n = 0
     for tk, t in progress.get("tracks", {}).items():
         if track_filter and tk != track_filter:
-            # Still increment the counter so numbering across the full
-            # curriculum stays stable when a filter is applied.
             n += len(t.get("lessons", []))
             continue
-        print(f"\n## {t.get('label', tk)}")
+        optional_tag = "  (OPTIONAL — certification only)" if t.get("optional") else ""
+        print(f"\n## {t.get('label', tk)}{optional_tag}")
         for lid in t.get("lessons", []):
             n += 1
             mark = "x" if lid in completed else " "
@@ -280,10 +280,15 @@ def cmd_complete(args) -> int:
                 next_id = l
                 break
     if not next_id:
-        # Look across all tracks
-        for _, l in _all_lessons(progress):
-            if l not in done_ids:
-                next_id = l
+        # Look across non-optional tracks first (canonical path).
+        for tk, t in progress.get("tracks", {}).items():
+            if t.get("optional"):
+                continue
+            for l in t.get("lessons", []):
+                if l not in done_ids:
+                    next_id = l
+                    break
+            if next_id:
                 break
     progress["current"] = {
         "track": track,
