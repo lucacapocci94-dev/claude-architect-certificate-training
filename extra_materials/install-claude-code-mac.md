@@ -2,43 +2,73 @@
 
 Easy-to-consult, easy-to-test commands. Each block is copy-pasteable; a verify command follows every install step.
 
-> **Requirements:** macOS 12+, Node.js ≥ 18, an internet connection.
+> **Requirements:** macOS 12+, an internet connection. Node.js is only required for the npm install method (Option C).
 
 ---
 
-## 1. Check Node.js
+## Pick an install method
+
+| Option | Needs Node/npm? | Best for |
+|---|---|---|
+| **A. Native installer (curl)** | No | Quickest path, official Anthropic installer |
+| **B. Homebrew cask** | No | You already use `brew` for everything |
+| **C. npm global** | Yes | You're already a Node developer |
+
+---
+
+## Option A — Native installer (no npm)
 
 ```bash
-node --version
-```
-
-Expected: `v18.x` or newer. If missing or too old, install via Homebrew:
-
-```bash
-brew install node
+curl -fsSL https://claude.ai/install.sh | bash
 ```
 
 Verify:
 
 ```bash
-node --version
+claude --version
 ```
 
-No Homebrew yet? Install it first:
+The script drops a native binary (typically under `~/.local/bin/claude`) and patches your shell rc to add it to `PATH`. If `command not found` after install, reopen the terminal or run `exec $SHELL`.
+
+---
+
+## Option B — Homebrew cask (no npm)
+
+```bash
+brew install --cask claude-code
+```
+
+Verify:
+
+```bash
+claude --version
+```
+
+If you don't have Homebrew yet:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-Verify:
-
-```bash
 brew --version
 ```
 
 ---
 
-## 2. Install Claude Code
+## Option C — npm global (requires Node.js ≥ 18)
+
+### C.1 Check Node.js
+
+```bash
+node --version
+```
+
+Expected: `v18.x` or newer. If missing or too old:
+
+```bash
+brew install node
+node --version
+```
+
+### C.2 Install Claude Code
 
 ```bash
 npm install -g @anthropic-ai/claude-code
@@ -71,7 +101,7 @@ claude --version
 
 ---
 
-## 3. Authenticate
+## Authenticate
 
 The first time you run `claude`, you'll be prompted.
 
@@ -98,7 +128,7 @@ echo $ANTHROPIC_API_KEY | head -c 10   # should print "sk-ant-..."
 
 ---
 
-## 4. Smoke test (30 seconds)
+## Smoke test (30 seconds)
 
 ```bash
 mkdir ~/claude-smoke-test && cd ~/claude-smoke-test
@@ -114,7 +144,7 @@ You should see Claude make a **Read** tool call, then reply. Exit with `/exit` o
 
 ---
 
-## 5. Common gotchas
+## Common gotchas
 
 | Symptom | Fix |
 |---|---|
@@ -126,15 +156,13 @@ You should see Claude make a **Read** tool call, then reply. Exit with `/exit` o
 
 ---
 
-## 6. One-shot verification script
+## One-shot verification
 
-Paste this whole block — it confirms every step is green:
+Works for any install method:
 
 ```bash
-echo "Node:    $(node --version)" \
-  && echo "npm:     $(npm --version)" \
-  && echo "claude:  $(claude --version)" \
+echo "claude:  $(claude --version)" \
   && echo "PATH OK: $(which claude)"
 ```
 
-If all four lines print a value, you're ready. Next stop: `/lesson first-session`.
+If both lines print a value, you're ready. Next stop: `/lesson first-session`.
